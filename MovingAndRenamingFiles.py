@@ -9,12 +9,18 @@ import time
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         for filename in os.listdir(folder_to_track):
+            count=0
+            for i in reversed(range(len(filename))):
+                if filename[i]=="." and count==0:
+                    indexval=i
+                    count=1
+            filetype=filename[indexval:]
+            time.sleep(2)
             src = folder_to_track + "/" + filename
             new_destination = folder_destination + "/" + filename
             os.rename(src,new_destination)
-            print("My Handler is working")
+            print(filetype)
 
-print("is this looping, yes it is?")
 folder_to_track = "C:/Users/taren/Desktop/TestingFolder/Folder1"
 folder_destination = "C:/Users/taren/Desktop/TestingFolder/Folder2"
 event_handler = MyHandler()
@@ -24,6 +30,6 @@ observer.start()
 
 try:
     while True:
-        time.sleep(1)
+        time.sleep(10)
 except KeyboardInterrupt:
     observer.stop()
